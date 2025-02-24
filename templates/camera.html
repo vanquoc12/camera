@@ -3,10 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Camera Feed</title>
+    <title>Live Camera</title>
+    <style>
+        body {
+            background-color: black;
+            text-align: center;
+            color: white;
+        }
+        img {
+            border: 5px solid #00ff00;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Live Camera Feed</h1>
-    <img src="{{ url_for('video_feed') }}" width="640" height="480">
+    <h1>🔴 Live Camera Streaming</h1>
+    <img id="camera" src="http://192.168.43.243/cam-hi.jpg" alt="Camera Stream">
+    <script>
+        setInterval(() => {
+            document.getElementById("camera").src = "http://192.168.43.243/cam-hi.jpg?t=" + new Date().getTime();
+        }, 100);
+    </script>
 </body>
 </html>
