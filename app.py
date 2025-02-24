@@ -3,9 +3,10 @@ import cv2
 import urllib.request
 import numpy as np
 import sys
+
 sys.stdout.reconfigure(encoding='utf-8')
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')  # Đảm bảo Flask tìm đúng thư mục templates
 
 # 🔹 Địa chỉ camera IP
 CAMERA_URL = 'http://192.168.43.243/cam-hi.jpg'
@@ -35,11 +36,8 @@ def generate_frames():
 
 @app.route('/')
 def index():
-    return render_template('camera.html')
+    return render_template('camera.html')  # Flask sẽ render đúng file trong "templates/"
 
 @app.route('/video')
 def video_feed():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace;
