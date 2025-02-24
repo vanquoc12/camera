@@ -30,7 +30,7 @@ def generate_frames():
                    b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
         except Exception as e:
-            print("Error:", e)
+            print(f"Error fetching camera feed: {e}")
             continue
 
 @app.route('/')
