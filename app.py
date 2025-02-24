@@ -14,7 +14,6 @@ CAMERA_URL = 'http://192.168.43.243/cam-hi.jpg'
 def generate_frames():
     while True:
         try:
-            # Lấy ảnh từ camera IP
             img_resp = urllib.request.urlopen(CAMERA_URL, timeout=1)
             imgnp = np.array(bytearray(img_resp.read()), dtype=np.uint8)
             frame = cv2.imdecode(imgnp, -1)
@@ -22,11 +21,9 @@ def generate_frames():
             if frame is None:
                 continue
 
-            # Mã hóa frame thành JPEG
             _, buffer = cv2.imencode('.jpg', frame)
             frame_bytes = buffer.tobytes()
 
-            # Trả về frame dưới dạng streaming
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
@@ -36,8 +33,11 @@ def generate_frames():
 
 @app.route('/')
 def index():
-    return render_template('camera.html')  # Flask sẽ render đúng file trong "templates/"
+    return render_template('camera.html')
 
 @app.route('/video')
 def video_feed():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace;
+    return Response(generate_frames(), mimetype="multipart/x-mixed-replace; boundary=frame")  # 🔹 Kiểm tra lại dấu nháy kép
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=False)
