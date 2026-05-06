@@ -6,21 +6,83 @@
     <title>Live Camera</title>
     <style>
         body {
-            background-color: black;
+            background-color: #121212;
             text-align: center;
             color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            position: relative;
+            display: inline-block;
         }
         img {
             border: 5px solid #00ff00;
             border-radius: 10px;
             width: 80%;
             max-width: 800px;
+            display: block;
+            margin: 0 auto;
+            background-color: #333;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #00ff00;
+            border: none;
+            color: black;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #00cc00;
+            transform: scale(1.05);
+        }
+        #timestamp {
+            font-family: monospace;
+            color: #00ff00;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <h1>🔴 Live Camera Streaming</h1>
-    <img id="camera" src="{{ url_for('video_feed') }}" alt="Camera Stream">
+
+    <div class="container">
+        <img id="camera" src="{{ url_for('video_feed') }}" alt="Camera Stream">
+    </div>
+
+    <div id="timestamp">Current Time: --:--:--</div>
+
+    <div class="controls">
+        <button onclick="toggleFullScreen()">🖥️ Full Screen</button>
+        <button onclick="location.reload()">🔄 Refresh Feed</button>
+    </div>
+
+    <script>
+        // Update the timestamp every second
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('timestamp').innerText = "Last Heartbeat: " + now.toLocaleTimeString();
+        }
+        setInterval(updateTime, 1000);
+
+        // Full screen toggle function
+        function toggleFullScreen() {
+            let elem = document.getElementById("camera");
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+        }
+    </script>
 </body>
 </html>
-#include <stdio.jh></stdio.jh>
